@@ -4,3 +4,4 @@ dist
 sample
 **/.DS_Store
 tmp
+package-lock.json
