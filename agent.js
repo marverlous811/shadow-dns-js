@@ -20,7 +20,7 @@ function cmdExec(command) {
       reject(err)
     })
     proc.on('close', (code) => {
-      console.log(`process is existed with code `, code)
+      // console.log(`process is existed with code `, code)
       resolve(result)
     })
   })
@@ -40,6 +40,7 @@ async function getPublicIp() {
 
 async function syncAgentIp() {
   const publicIp = await getPublicIp()
+  console.log('public ip found: ', publicIp)
   if (publicIp) {
     if (publicIp !== currentIp) {
       await onChanged(publicIp)
@@ -50,10 +51,11 @@ async function syncAgentIp() {
 async function onChanged(ip) {
   try {
     currentIp = ip
-    await axios.default.post(`${DNS_API_URL}/domain`, {
+    const res = await axios.default.post(`${DNS_API_URL}/domain`, {
       ip,
       domain: DOMAIN,
     })
+    console.log('update ip with response', res.data)
   } catch (e) {
     console.log(`error when call domain api`, e)
   }

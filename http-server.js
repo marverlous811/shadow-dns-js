@@ -12,7 +12,7 @@ class HttpServer {
   }
 
   init() {
-    this.app.use(require('cors'))
+    this.app.use(require('cors')())
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.router()
@@ -21,6 +21,7 @@ class HttpServer {
   router() {
     this.app.post('/domain', (req, res) => {
       const data = req.body
+      console.log('update ip for domain', data)
       const { domain, ip } = data
       domainStore.setDomain(domain, ip)
       res.send({ status: true })
