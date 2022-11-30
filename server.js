@@ -1,3 +1,4 @@
+const path = require('path')
 const DnsServer = require('./dns')
 const store = require('./domain.store')
 const HttpServer = require('./http-server')
@@ -30,7 +31,7 @@ process.on(
   existHandler.bind(null, { exit: true, cleanup: true })
 )
 ;(async () => {
-  await makeFile('tmp')
+  await makeFile(path.join(process.cwd(), 'tmp'))
   const dnsServer = new DnsServer(DNS_PORT)
   dnsServer.start()
 

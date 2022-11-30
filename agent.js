@@ -2,6 +2,7 @@ const { spawn } = require('child_process')
 const axios = require('axios')
 const DOMAIN = process.env.DOMAIN
 const DNS_API_URL = process.env.DNS_API_URL
+let currentIp = null
 
 function cmdExec(command) {
   return new Promise((resolve, reject) => {
@@ -40,14 +41,21 @@ async function getPublicIp() {
 async function syncAgentIp() {
   const publicIp = await getPublicIp()
   if (publicIp) {
-    try {
-      await axios.default.post(`${DNS_API_URL}/domain`, {
-        ip: publicIp,
-        domain: DOMAIN,
-      })
-    } catch (e) {
-      console.log(`error when call domain api`, e)
+    if (publicIp !== currentIp) {
+      await onChanged(publicIp)
     }
+  }
+}
+
+async function onChanged(ip) {
+  try {
+    currentIp = ip
+    await axios.default.post(`${DNS_API_URL}/domain`, {
+      ip,
+      domain: DOMAIN,
+    })
+  } catch (e) {
+    console.log(`error when call domain api`, e)
   }
 }
 
