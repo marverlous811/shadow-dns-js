@@ -5,6 +5,7 @@ class DomainStore {
   constructor() {
     this.store = {}
     this.restore = this.restore.bind(this)
+    this.backUp = this.backUp.bind(this)
     this.restore()
   }
 
@@ -17,7 +18,11 @@ class DomainStore {
   }
 
   async backUp() {
-    await writeFile(backupFilePath, JSON.stringify(this.store, null, 2))
+    try {
+      await writeFile(backupFilePath, JSON.stringify(this.store, null, 2))
+    } catch (e) {
+      console.log('backup store error', e)
+    }
   }
 
   async restore() {
