@@ -17,6 +17,10 @@ class DomainStore {
     return this.store[domain]
   }
 
+  list() {
+    return this.store
+  }
+
   async backUp() {
     try {
       await writeFile(backupFilePath, JSON.stringify(this.store, null, 2))

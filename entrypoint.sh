@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 if [[ -n $TYPE && $TYPE == "agent" ]]; then
     node agent.js
 else

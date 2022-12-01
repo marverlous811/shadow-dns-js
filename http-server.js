@@ -30,6 +30,9 @@ class HttpServer {
       }
       res.send({ status: true })
     })
+    this.app.get('/domain', (req, res) => {
+      res.send({ data: domainStore.list() })
+    })
   }
 
   start() {
