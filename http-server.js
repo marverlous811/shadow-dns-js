@@ -1,5 +1,6 @@
 const express = require('express')
 const domainStore = require('./domain.store')
+const { isIp } = require('./util')
 
 class HttpServer {
   constructor(port = 8080) {
@@ -23,7 +24,10 @@ class HttpServer {
       const data = req.body
       console.log('update ip for domain', data)
       const { domain, ip } = data
-      domainStore.setDomain(domain, ip)
+      const isIpMatched = isIp(ip)
+      if (isIpMatched) {
+        domainStore.setDomain(domain, ip)
+      }
       res.send({ status: true })
     })
   }

@@ -53,10 +53,16 @@ async function readObjectFromFile(fname) {
   }
 }
 
+function isIp(data) {
+  const ipMatchedRegex = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/g
+  return new RegExp(ipMatchedRegex).test(data)
+}
+
 module.exports = {
   makeFile,
   writeFile,
   readFile,
   isFileExist,
   readObjectFromFile,
+  isIp,
 }

@@ -12,12 +12,14 @@ class DnsServer {
     this.onListening = this.onListening.bind(this)
     this.onClose = this.onClose.bind(this)
     this.answerDnsQuestion = this.answerDnsQuestion.bind(this)
+    this.onDnsRequest = this.onDnsRequest.bind(this)
     this.start = this.start.bind(this)
   }
 
   start() {
     this.server.on('listening', this.onListening)
     this.server.on('close', this.onClose)
+    this.server.on('request', this.onDnsRequest)
     this.server.listen({
       udp: {
         port: this.port,
@@ -41,6 +43,10 @@ class DnsServer {
       }
     }
     send(response)
+  }
+
+  onDnsRequest(request, response, rinfo) {
+    console.log(request.header.id, request.questions[0])
   }
 
   onListening() {

@@ -1,5 +1,6 @@
 const { spawn } = require('child_process')
 const axios = require('axios')
+const { isIp } = require('./util')
 const DOMAIN = process.env.DOMAIN
 const DNS_API_URL = process.env.DNS_API_URL
 let currentIp = null
@@ -42,8 +43,10 @@ async function syncAgentIp() {
   const publicIp = await getPublicIp()
   console.log('public ip found: ', publicIp)
   if (publicIp) {
-    if (publicIp !== currentIp) {
-      await onChanged(publicIp)
+    if (isIp(publicIp)) {
+      if (publicIp !== currentIp) {
+        await onChanged(publicIp)
+      }
     }
   }
 }
